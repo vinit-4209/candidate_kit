@@ -825,7 +825,10 @@ def build_employee_monthly_pipeline(emp_code: str, month_start_str: str, month_e
 def build_department_summary_pipeline(month_start_str: str, month_end_str: str, department: Optional[str] = None) -> list[dict]:
     match_filter = {"joined_on": {"$lte": month_end_str}}
     if department is not None:
-        match_filter["department"] = department
+        # match_filter["department"] = department
+        if "department" not in match_filter:
+            match_filter["department"] = {}
+        match_filter["department"]["$eq"] = department
 
     return [
         {"$match": match_filter},
